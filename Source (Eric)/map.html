@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Bree+Serif');
+      @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans');
+
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 75%;
+        width: 75%;
+        margin: auto;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        padding: 0;
+      }
+      
+      p{
+      	font-family: 'Alegreya Sans', sans-serif;
+      }
+      
+      h3{
+      	font-family: 'Bree Serif', serif;
+      }
+    </style>
+  </head>
+  <body>
+  	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr60lEMN69JMO_TeMU0LvFkFWb_7-YhWE&callback=initMap"
+    	async defer>
+	</script>
+    <div id="map"></div>
+    <script>
+      	var map;
+		function initMap() 
+      	{
+      		var geocoder = new google.maps.Geocoder();
+    		map = new google.maps.Map(document.getElementById('map'), {
+    			center: {lat: 40.85, lng: -124},
+    			zoom: 9
+       	 	});
+       	 	
+       	 	geocodeAddress(geocoder, map);
+      	}
+      	
+      	function geocodeAddress(geocoder, map) 
+      	{
+        	var address = 'Arcata, CA';
+        	geocoder.geocode({'address': address}, function(results, status) {
+          		if (status === 'OK') 
+          		{
+           			var marker = new google.maps.Marker({
+            			map: map,
+              			position: results[0].geometry.location
+            			});
+            			
+            		var contentString = '<h3> This is an Event </h3>' +
+            			'<p> $Info </p>' +
+            			'<p> Time </p>' +
+            			'<p> Date </p>';
+            			
+            		var infowindow = new google.maps.InfoWindow({
+          				content: contentString
+        				});
+        				
+        			marker.addListener('click', function() {
+          				infowindow.open(map, marker);
+        				});
+          		} 
+          	
+          		else 
+          		{
+            		alert('Geocode was not successful for the following reason: ' + status);
+          		}
+        	});
+      	}
+      	
+      	
+    </script>
+  </body>
+</html>
