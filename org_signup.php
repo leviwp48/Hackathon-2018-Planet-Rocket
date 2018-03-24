@@ -269,6 +269,14 @@
 				}
 				
 			}
+			else
+			{
+				?>
+				You shouldn't be here <br />
+				<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
+				<?php
+				session_destroy();
+			}
 			?>
 </body>
 </html>

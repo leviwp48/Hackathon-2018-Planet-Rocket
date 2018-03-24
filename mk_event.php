@@ -155,7 +155,7 @@
 			 					<label> Event Description: <br />
 			 						<input type="text" name="event_description" maxlength="140" required="required" />
 			 					</label> <br /> <br />
-			 					Event Start Time: <br />
+			 					Event Date: <br />
 			 					<label> Day: 
 			 						<select name="event_day">
 			 							<option value="01">01</option>
@@ -213,12 +213,16 @@
 			 					</label> <br />
 			 					<br />
 			 					<label> Start time: <br />
-			 						<input type="number" name="event_start_hour" min="01" max="12" /> : <input type="number" name="event_start_minute" min="01" max="12" />
-			 					</label>
+			 						<input type="number" name="event_start_hour" min="01" max="12" required="required"  /> : <input required="required" type="number" name="event_start_minute" min="00" max="59" />
+			 						<select name="event_aorp"/>
+			 							<option value="AM"/>AM</option>
+			 							<option value="PM"/>PM</option>
+			 						</select>
+			 					</label> <br /> <br />
 			 					<label> Event Address: <br />
 			 						<input type="text" name="event_address" required="required" maxlength="75" />
 			 					</label> <br />
-			 					</label>
+			 					</label> 
 			 					<label> Event City: <br />
 			 						<input type="text" name="event_city" required="required" maxlength="50" />
 			 					</label> <br />
@@ -262,16 +266,21 @@
 		$oracle_usr = $_SESSION['oracle_usr'];
 		$oracle_pwd = $_SESSION['oracle_pwd'];
 		$conn = oci_connect($oracle_usr, $oracle_pwd, $db_conn_str);
-		if(array_key_exists('event_address', $_POST) and array_key_exists('event_start_time', $_POST) and array_key_exists('event_name', $_POST) and array_key_exists('event_description', $_POST)   and array_key_exists('event_city', $_POST)  and array_key_exists('event_state', $_POST)  and array_key_exists('event_zip', $_POST) and array_key_exists('event_day', $_POST) and array_key_exists('event_month', $_POST) and array_key_exists('event_year', $_POST))
+		if(array_key_exists('event_address', $_POST) and array_key_exists('event_name', $_POST) and array_key_exists('event_description', $_POST)   and array_key_exists('event_city', $_POST)  and array_key_exists('event_state', $_POST)  and array_key_exists('event_zip', $_POST) and array_key_exists('event_day', $_POST) and array_key_exists('event_month', $_POST) and array_key_exists('event_year', $_POST) and array_key_exists('event_start_hour', $_POST) and array_key_exists('event_start_minute', $_POST))
 		{
-			$event_start_time = $_POST['event_start_time'];
 			$event_address = $_POST['event_address'];
 			$event_name = $_POST['event_name'];
 			$event_description = $_POST['event_description'];
 			$event_city = $_POST['event_city'];
 			$event_state = $_POST['event_state'];
 			$event_zip = $_POST['event_zip'];
-			//$event_day = 
+			$event_day = $_POST['event_day'];
+			$event_month = $_POST['event_month'];
+			$event_year = $_POST['event_year'];
+			$event_start_hour = $_POST['event_start_hour'];
+			$event_start_minute = $_POST['event_start_minute'];
+			$event_aorp = $_POST['event_aorp'];
+			$date_str = $event_day."-".$event_month."-".$event_year." ".$event_start_hour.":".$event_start_minute." ".$event_aorp;
 			
 			if(!$conn)
 			{
@@ -284,16 +293,58 @@
 			}
 			else
 			{
-				$new_row_str = "insert into event (event_id, event_date, event_time, event_name, event_description, event_address, event_city, event_state, event_zip)
+				$new_row_str = "insert into event (event_id, event_date, event_name, event_description, event_address, event_city, event_state, event_zip)
 								values
-								(new_event_id.nextval, '".$event_date."', '".$event_start_time."', '".$event_name."', '".$event_description."', '".$event_address."', '".$event_city."', '".$event_state."', '".$event_zip."')";
+								(new_event_id.nextval, to_date('".$date_str."','DD-MON-YY HH:MI PM'), '".$event_name."', '".$event_description."', '".$event_address."', '".$event_city."', '".$event_state."', '".$event_zip."')";
 				$new_row_stmt = oci_parse($conn, $new_row_str);
+				$change_format_str = "alter session set NLS_DATE_FORMAT = 'dd-MON-yyyy HH24:mi'";
+				$change_format_stmt = oci_parse($conn, $change_format_str);
+				oci_execute($change_format_stmt, OCI_DEFAULT);
 				$num_rows = oci_execute($new_row_stmt, OCI_DEFAULT);
+				
+				$get_eid_str = "select event_id
+								   from event
+								   where event_name = '".$event_name."'
+										and event_description = '".$event_description."'";
+				$get_eid_stmt = oci_parse($conn, $get_eid_str);
+				oci_execute($get_eid_stmt, OCI_DEFAULT);
+				if(oci_fetch($get_eid_stmt))
+				{
+					$event_id = oci_result($get_eid_stmt, 'EVENT_ID');
+				}
+				
+				$org_username = $_SESSION['org_username'];
+				$org_password = $_SESSION['org_password'];
+				$get_oid_str = "select org_id
+								   from org_account
+								   where org_username = '".$org_username."'
+										and org_password = '".$org_password."'";
+				$get_oid_stmt = oci_parse($conn, $get_oid_str);
+				oci_execute($get_oid_stmt, OCI_DEFAULT);
+				if(oci_fetch($get_oid_stmt))
+				{
+					$org_id = oci_result($get_oid_stmt, 'ORG_ID');
+				}
+				
+				if(($org_id) and ($event_id))
+				{
+					$insert_new_str = "insert into org_has_event 
+									   values
+									   (".$org_id.", ".$event_id.")";
+					$insert_new_stmt = oci_parse($conn, $insert_new_str);
+					oci_execute($insert_new_stmt, OCI_DEFAULT);
+					oci_commit($conn);
+				}
+				
 				?>
 				<?= $num_rows?> event has been added.
 				<?php
 				oci_commit($conn);
 				oci_free_statement($new_row_stmt);
+				oci_free_statement($get_eid_stmt);
+				oci_free_statement($insert_new_stmt);
+				oci_free_statement($get_oid_stmt);
+				oci_free_statement($change_format_stmt);
 			}
 			session_destroy();
 		}
