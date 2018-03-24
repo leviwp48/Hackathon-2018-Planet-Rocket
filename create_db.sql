@@ -26,7 +26,6 @@ create table event
  event_name varchar(50) not null,
  event_description varchar(140),
  event_date	varchar(20),
- event_time	varchar(10),
  event_loc		varchar(50),
  event_address	varchar(75),
  event_city 	varchar(50),
