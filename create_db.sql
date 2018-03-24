@@ -29,6 +29,9 @@ create table event
  event_time	varchar(10),
  event_loc		varchar(50),
  event_address	varchar(75),
+ event_city 	varchar(50),
+ event_state	varchar(50),
+ event_zip		varchar(50),
  primary key 	(event_id)
  );
   
