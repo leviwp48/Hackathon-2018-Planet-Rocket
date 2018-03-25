@@ -6,7 +6,7 @@ session_start();
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <!--
-    by: Levi Pole, Alec Levin
+    by: Levi Pole, Alec Levin, Benjamin Miller
 		Hackathon 2018
 
     you can run this using the URL: http://nrs-projects.humboldt.edu/~arl505/hack/title_page.php
@@ -17,9 +17,8 @@ session_start();
     <meta charset="utf-8" />   
 	<meta name="viewport" content="initial-scale=1.0">
 	
-	<link href="http://nrs-projects.humboldt.edu/~lwp41/planetrocket/format.css"
-          type="text/css" rel="stylesheet" />
-	<link href="card.css" type="text/css" rel="stylesheet" />
+    <link href="styles/format2.css"  type="text/css" rel="stylesheet">
+	<link href="styles/card.css" type="text/css" rel="stylesheet" />
 	
 	<style>
 	table, tr, td, th
@@ -32,6 +31,7 @@ session_start();
 	<?php
 		header('X-Frame-Options: GOFORIT'); 
 		require_once("hsu_conn.php");
+		require_once("form_injections.php");
 	?>
 	
 </head>
@@ -41,24 +41,13 @@ session_start();
 	if(! array_key_exists('next-state', $_SESSION))
 	{
 		?>
-		To view this page, you must have access to the main database. Enter your Oracle credentials.
-		<fieldset> <legend> Database Login </legend>
-			<form action = "<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
-			  method = "post" /> 
-				<label> Oracle Username: <br />
-					<input type="text" name="oracle_username" required="required"/>
-				</label> <br />
-				<label> Oracle Password: <br />
-					<input type="password" name="oracle_password" required="required" />
-				</label> <br />
-				<input type="submit" value="Submit" />
-			</form>
-		</fieldset>
+		<p>To view this page, you must have access to the main database. Enter your Oracle credentials.</p>
 		<?php
+		oraclelogin();
 		$_SESSION['next-state'] = '1goto';
 	}
 			
-	elseif ($_SESSION['next-state'] == '1goto' )
+	elseif ($_SESSION['next-state'] == '1goto')
 	{
 		if(array_key_exists('oracle_username', $_POST) and array_key_exists('oracle_password', $_POST))
 		{
@@ -81,21 +70,21 @@ session_start();
 			{
 				
 			?>
-	<h1> Planet Rocket </h1>
-	
-	<div class="dropdown-events">
-		<button class="events"> <a href="#event-section"> Events </a> </button>
-		<div class="dropdown-events-content">
-			<a href="#schedule-section"> Schedule </a>
-			<a href="#calendar-section"> Calendar </a> 
-			<a href="#map-section"> Map </a> 
-		</div>
-	</div>
-    <button type="button" class="nav"> <a href="#org-section"> Organization </a> </button>
-    <button type="button" class="nav"> <a href="#login-section"> Login </a> </button>
-	
-    <h2> Important Events </h2>
-    <?php	
+				<h1> Planet Rocket </h1>
+				
+				<div class="dropdown-events">
+					<button class="events nav"> <a href="#event-section"> Events </a> </button>
+					<div class="dropdown-events-content">
+						<a href="#schedule-section"> Schedule </a>
+						<a href="#calendar-section"> Calendar </a> 
+						<a href="#map-section"> Map </a> 
+					</div>
+				</div>
+			    <button type="button" class="nav"> <a href="profile.php"> Organization </a> </button>
+			    <button type="button" class="nav"> <a href="org_login.php"> Login </a> </button>
+				
+			    <h2> Important Events </h2>
+    			<?php	
 				$get_events_str = 'select *
 								   from event
 								   order by event_date';
@@ -159,10 +148,10 @@ session_start();
 						?>
 								<div class="card">
 								<div class="org">
-									<img src="black.jpeg" alt="Avatar" class="avatar">
+									<img src="images/black.jpeg" alt="Avatar" class="avatar">
 									<h3 class="av_header"> <?= $event_owners ?></h3>
 								</div>
-								<img src="hsu_lib.jpg" style="width:100%">
+								<img src="images/hsu_lib.jpg" style="width:100%">
 								<div class="text">
 									<h4 class="header"><?= $curr_name ?></h4>
 									<p class="info"><?= $curr_description ?></p>
@@ -177,7 +166,7 @@ session_start();
 				?>
 				</div>
 	
-	<div class="holder" id="schedule-section"> <h1> Schedule Section </h1> 
+		<div class="holder" id="schedule-section"> <h1> schedule section </h1> 
 		<div id="list"> 
 		
 		<?php
@@ -187,7 +176,7 @@ session_start();
 		else
 		{
 			?>
-			You shouldn't be here! <br />
+			You shouldn't be here login fail! <br />
 			<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
 			<?php	
 			session_destroy();
@@ -283,7 +272,7 @@ session_start();
 		</div>
 	</div>
 	
-	<div class="holder" id="calendar-section"> <h1> Calendar Section </h1> 	
+	<div class="holder" id="calendar-section"> <h1> calendar section </h1> 	
 		<iframe src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1
 			&amp;bgcolor=%23FFFFFF&amp;src=mockupplanetrocket%40gmail.com&amp;color=%
 			231B887A&amp;ctz=America%2FLos_Angeles" 
@@ -293,8 +282,9 @@ session_start();
     </div>
 	
 	<div class="holder" id="map-section">
-	<h1> Map Section </h1>
-		<a href="http://nrs-projects.humboldt.edu/~lwp41/planetrocket/map.html" class="map-link"> to map </a>
+	<h1> Map section </h1>
+	<div class="overlay"><iframe id="iframe" class="mapframe" src="map2.html"></iframe></div>
+		
 	</div>
 			
 	<?php
