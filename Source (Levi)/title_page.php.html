@@ -1,9 +1,13 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <!--
     by: Levi Pole
-    last modified: 3/24/18
+		Hackathon 2018
 
     you can run this using the URL: http://nrs-projects.humboldt.edu/~lwp41/planetrocket/titlepage.php
 -->
@@ -11,16 +15,20 @@
 <head>
     <title> Planet Rocket </title>
     <meta charset="utf-8" />   
+	<meta name="viewport" content="initial-scale=1.0">
 	
 	<link href="http://nrs-projects.humboldt.edu/~lwp41/planetrocket/format.css"
           type="text/css" rel="stylesheet" />
-	
-	<script src="map.js"></script>
+	<link href="card.css" type="text/css" rel="stylesheet" />
+			
+	<?php
+		header('X-Frame-Options: GOFORIT'); 
+		require_once("hsu_conn.php");
+	?>
 	
 </head>
 
 <body>
-	
 	<h1> Planet Rocket </h1>
 	
 	<div class="dropdown-events">
@@ -35,37 +43,258 @@
     <button type="button" class="nav"> <a href="#login-section"> Login </a> </button>
 	
     <h2> Important Events </h2>
-	<div class="event-card" id="card1"> </div>
-	<div class="event-card" id="card2"> </div>
-	<div class="event-card" id="card3"> </div>
-	<div class="event-card" id="card4"> </div>
+	<div class="wrapper">
 	
-	<div class="separator"> </div>
-	
-	<div class="holder" id="schedule-section"> <h1> schedule section </h1> </div>
-	<div class="holder" id="calendar-section"> <h1> calendar section </h1> </div>
-	
-	<div class="holder" id="map-section"> 
-		<h1> map section </h1>
-		<div id="map"> 	
-			 <script>
-      function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-      }
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjO-S93qRTrSO8ZLVP8WdZviasqu-v1rk&callback=initMap">
-    </script>
-		</div>				
+	<div class="card">
+		<div class="org">
+			<img src="black.jpeg" alt="Avatar" class="avatar">
+			<h3 class="av_header"> Planet Rocket</h3>
+		</div>
+		<img src="hsu_lib.jpg" style="width:100%">
+		<div class="text">
+			<h4 class="header">Event Name</h4>
+			<p class="info">Info</p>
+			<p class="info">Date</p>
+			<p class="info">Location</p>
+		</div>
 	</div>
+	
+	<div class="card">
+		<div class="org">
+			<img src="black.jpeg" alt="Avatar" class="avatar">
+			<h3 class="av_header"> Red Cross</h3>
+		</div>
+		<img src="hsu_lib.jpg" style="width:100%">
+		<div class="text">
+			<h4 class="header">Event Name</h4>
+			<p class="info">Info</p>
+			<p class="info">Date</p>
+			<p class="info">Location</p>
+		</div>
+	</div>
+	
+	<div class="card">
+		<div class="org">
+			<img src="black.jpeg" alt="Avatar" class="avatar">
+			<h3 class="av_header"> Friends of the Dunes</h3>
+		</div>
+		<img src="hsu_lib.jpg" style="width:100%">
+		<div class="text">
+			<h4 class="header">Event Name</h4>
+			<p class="info">Info</p>
+			<p class="info">Date</p>
+			<p class="info">Location</p>
+		</div>
+	</div>
+	
+	<div class="card">
+		<div class="org">
+			<img src="black.jpeg" alt="Avatar" class="avatar">
+			<h3 class="av_header">Greenpeace</h3>
+		</div>
+		<img src="hsu_lib.jpg" style="width:100%">
+		<div class="text">
+			<h4 class="header">Event Name</h4>
+			<p class="info">Info</p>
+			<p class="info">Date</p>
+			<p class="info">Location</p>
+		</div>
+	</div>
+	
+	</div>
+	
+	<div class="holder" id="schedule-section"> <h1> schedule section </h1> 
+		<div id="list"> 
+		<ul>
 		
+		<?php
+		if ( ! array_key_exists("next-state", $_SESSION) )
+		{
+			?>
+		
+			<form method="post" 
+				  action="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">
+			<fieldset>
+				<legend> Please enter Oracle username/password: </legend>
+			
+				<label for="username"> Username: </label>
+					<input type="text" name="username" id="username" required="required"/> 
+
+				<label for="password"> Password: </label>
+					<input type="password" name="password" 
+						   id="password" required="required"/>
+
+				<div class="submit">
+					<input type="submit" value="Log in" />
+				</div>
+			</fieldset>
+			</form>
+			<?php
+			$_SESSION['next-state'] = 'place2';
+		}      
+		elseif($_SESSION['next-state'] == 'place2')
+		{
+			if(array_key_exists('username', $_POST) and array_key_exists('password', $_POST))
+			{
+			
+				$username = strip_tags($_POST['username']);
+
+				$password = $_POST['password'];
+		
+				$conn = hsu_conn($username, $password);  
+				if($conn)
+				{			
+					$tracker = 0;				
+				
+					$count_query = 'select count(event_id)
+									from event';
+					$count_parse = oci_parse($conn, $count_query);
+					oci_execute($count_parse, OCI_DEFAULT);
+					if(oci_fetch($count_parse)){
+						$count = oci_result($count_parse, "COUNT(EVENT_ID)");
+					}
+					?>
+					<ul>
+					<?php
+					$query = 'select event_name, event_description, event_date, event_address
+							  from event';
+					$query_parse = oci_parse($conn, $query);
+					oci_execute($query_parse, OCI_DEFAULT);
+					
+					?> 
+					<!--
+						<caption> Event Information </a>
+							<tr> <th scope="col"> Name</th>
+								 <th scope="cols"> Description</th>
+								 <th scope="cols"> Date </th>
+								 <th scope="cols"> Address </th>
+							</tr>
+					-->
+						<?php 
+					while ($tracker < $count)
+					{
+						if(oci_fetch($query_parse))
+						{
+							$curr_event_name = oci_result($query_parse, "EVENT_NAME");
+							$curr_event_description = oci_result($query_parse, "EVENT_DESCRIPTION");
+							$curr_event_date = oci_result($query_parse, "EVENT_DATE");
+							$curr_event_address = oci_result($query_parse, "EVENT_ADDRESS");	
+							?>
+								<li> 
+									<div class="values">
+										<p> <?= $curr_event_name ?> </p>
+										<p> <?=$curr_event_description ?> </p>
+										<p> <?= $curr_event_date ?> </p>
+										<p> <?= $curr_event_address ?> </p>
+									</div>
+								</li>
+								<!--
+									<tr><td><?= $curr_event_name ?> </td>
+										<td><?= $curr_event_description ?> </td>
+										<td><?= $curr_event_date ?> </td>
+										<td><?= $curr_event_address ?> </td> </tr>
+								-->
+							<?php
+						}
+						else
+						{
+						?>
+							NO QUERY RESULTS!
+						<?php
+						}
+						$tracker =  $tracker + 1;
+					}
+					?>
+					</ul>
+					<?php
+				}
+	
+			}
+			else
+			{
+				?>
+				SHOULDN'T HAVE BEEN ABLE TO MAKE IT HERE!
+				<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
+				<?php
+				session_destroy();
+				exit;
+			}
+		}
+		else
+		{
+			?>
+			SHOULDN'T HAVE BEEN ABLE TO MAKE IT HERE!
+			<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
+			<?php
+			session_destroy();
+			exit;
+		}
+		?>
+	
+		</div>
+	</div>
+	
+	<div class="holder" id="calendar-section"> <h1> calendar section </h1> 	
+		<iframe src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1
+			&amp;bgcolor=%23FFFFFF&amp;src=mockupplanetrocket%40gmail.com&amp;color=%
+			231B887A&amp;ctz=America%2FLos_Angeles" 
+			style="border-width:0" width="800" height="600" 
+			frameborder="0" >
+		</iframe>
+    </div>
+	
+	<div class="holder" id="map-section">
+	
+	<h1> Map section </h1>		
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr60lEMN69JMO_TeMU0LvFkFWb_7-YhWE&callback=initMap"
+			async defer>
+		</script>		
+		<div id="map"></div>
+		<script>
+			var map;
+			function initMap() 
+			{
+				var geocoder = new google.maps.Geocoder();
+				map = new google.maps.Map(document.getElementById('map'), {
+					center: {lat: 40.85, lng: -124},
+					zoom: 9
+				});
+       	 	
+				geocodeAddress(geocoder, map);
+			}
+      	
+			function geocodeAddress(geocoder, map) 
+			{
+				var address = 'Arcata, CA';
+				geocoder.geocode({'address': address}, function(results, status) {
+					if (status === 'OK') 
+					{
+						var marker = new google.maps.Marker({
+							map: map,
+							position: results[0].geometry.location
+							});
+            			
+						var contentString = '<h3> This is an Event </h3>' +
+							'<p> Info </p>' +
+							'<p> Time </p>' +
+							'<p> Date </p>';
+            			
+						var infowindow = new google.maps.InfoWindow({
+							content: contentString
+							});
+        				
+						marker.addListener('click', function() {
+							infowindow.open(map, marker);
+							});
+					} 
+          	
+					else 
+					{
+						alert('Geocode was not successful for the following reason: ' + status);
+					}
+				});
+			}      	
+		</script>	
+	</div>	
 </body>
 </html>
