@@ -78,6 +78,7 @@
 .holder
 {
 	margin-top: 100px;
+	
 }
 
 li
@@ -105,8 +106,9 @@ li
 
 #map 
 {
-    height: 100px;
-    width: 100px;
+    height: 75%;
+    width: 75%;
+    margin: auto;
 	border-style: solid;
 }
 
