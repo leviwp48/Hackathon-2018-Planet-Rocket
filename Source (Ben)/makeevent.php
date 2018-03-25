@@ -227,7 +227,7 @@
 				}
 				
 				?>
-				<?= $num_rows?> event has been added.
+				
 				<?php
 				oci_commit($conn);
 				oci_free_statement($new_row_stmt);
@@ -236,7 +236,14 @@
 				oci_free_statement($get_oid_stmt);
 				oci_free_statement($change_format_stmt);
 			}
-			session_destroy();
+			?>
+			<div class="alignbtn">
+				<p><?= $num_rows?> event has been added.</p>
+				<a href="profile.php"><button>Back to Profile</button></a>
+			</div>
+			
+			<?php
+			unset($_SESSION['next-state']);
 		}
 		else
 		{
