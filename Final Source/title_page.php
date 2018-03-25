@@ -177,7 +177,7 @@ session_start();
 				?>
 				</div>
 	
-	<div class="holder" id="schedule-section"> <h1> schedule section </h1> 
+	<div class="holder" id="schedule-section"> <h1> Schedule Section </h1> 
 		<div id="list"> 
 		
 		<?php
@@ -283,7 +283,7 @@ session_start();
 		</div>
 	</div>
 	
-	<div class="holder" id="calendar-section"> <h1> calendar section </h1> 	
+	<div class="holder" id="calendar-section"> <h1> Calendar Section </h1> 	
 		<iframe src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1
 			&amp;bgcolor=%23FFFFFF&amp;src=mockupplanetrocket%40gmail.com&amp;color=%
 			231B887A&amp;ctz=America%2FLos_Angeles" 
@@ -293,7 +293,7 @@ session_start();
     </div>
 	
 	<div class="holder" id="map-section">
-	<h1> Map section </h1>
+	<h1> Map Section </h1>
 		<a href="http://nrs-projects.humboldt.edu/~lwp41/planetrocket/map.html" class="map-link"> to map </a>
 	</div>
 			
