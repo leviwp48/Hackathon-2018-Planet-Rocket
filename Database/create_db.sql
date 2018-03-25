@@ -20,13 +20,14 @@ create table org_account
  primary key 	(org_id)
  );
  
+ 
 --Used to hold all of the data for the events
 create table event
 (event_id		int not null,
  event_name varchar(50) not null,
  event_description varchar(140),
- event_date	varchar(20),
- event_loc		varchar(50),
+ event_date	date,
+ event_time varchar(20),
  event_address	varchar(75),
  event_city 	varchar(50),
  event_state	varchar(50),
