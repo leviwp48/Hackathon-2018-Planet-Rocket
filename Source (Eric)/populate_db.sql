@@ -62,6 +62,7 @@ values
  (4444, 4444);
  
  
+ /*
  select *
  from org_account;
  
@@ -70,4 +71,4 @@ values
  
  select *
  from org_has_event;
- 
+ */
