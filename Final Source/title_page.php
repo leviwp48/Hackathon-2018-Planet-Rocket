@@ -6,7 +6,7 @@ session_start();
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <!--
-    by: Levi Pole
+    by: Levi Pole, Alec Levin
 		Hackathon 2018
 
     you can run this using the URL: http://nrs-projects.humboldt.edu/~arl505/hack/title_page.php

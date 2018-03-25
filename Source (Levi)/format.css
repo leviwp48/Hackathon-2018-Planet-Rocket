@@ -78,7 +78,6 @@
 .holder
 {
 	margin-top: 100px;
-
 }
 
 li
@@ -101,21 +100,14 @@ li
 .values
 {
 	background-color: cyan;
-	margin-top: 20px;
+	margin-top: 20px; 
 }
 
-#map
+#map 
 {
     height: 75%;
     width: 75%;
     margin: auto;
-	border-style: solid;
-}
-
-#section
-{
-	border-style: solid;
-	margin-bottom: 50px;
 }
 
 .map-link

@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css?family=Bree+Serif');
+@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans');
+
+.card 
+{
+	width: 18em;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    margin: 1em;
+}
+
+.card:hover 
+{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.wrapper
+{
+	margin: 1em;
+	display: grid;
+	width: 50%;
+	grid-gap: 5px;
+	grid-template-columns: auto auto auto auto;
+}
+
+.org
+{
+	height: 62px;
+	padding-right:10px;
+	padding-left:10px;
+	padding-top:10px;
+	text-align: center; 
+    vertical-align: middle;
+    line-height: 10px;
+    border-radius: 5px 5px 0 0;
+}
+
+.avatar 
+{
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    float: left;
+}
+
+.av_header
+{
+	font-family: 'Bree Serif', serif;
+}
+
+.text 
+{
+    padding: 1px 16px;
+}
+
+.header
+{
+	font-family: 'Bree Serif', serif;
+}
+
+.info
+{
+	font-family: 'Alegreya Sans', sans-serif;
+}
