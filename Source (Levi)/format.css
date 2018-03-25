@@ -105,8 +105,14 @@ li
 
 #map 
 {
-    height: 75%;
-    width: 75%;
-    margin: auto;
+    height: 100px;
+    width: 100px;
+	border-style: solid;
+}
+
+#section
+{
+	border-style: solid;
+	margin-bottom: 50px;
 }
   
