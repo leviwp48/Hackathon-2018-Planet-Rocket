@@ -1,7 +1,7 @@
 --Eric Mott
 --Team HotSauce
 --Hackathon 2018
-
+df
 drop table org_account cascade constraints;
 drop table event cascade constraints;
 drop table volunteer cascade constraints;
@@ -19,8 +19,8 @@ create table org_account
  org_url		varchar(50),
  primary key 	(org_id)
  );
- 
- 
+
+
 --Used to hold all of the data for the events
 create table event
 (event_id		int not null,
@@ -34,7 +34,7 @@ create table event
  event_zip		varchar(50),
  primary key 	(event_id)
  );
-  
+
 --Used to hold all of the data for volunteers
 create table volunteer
 (vol_id 		int not null,
@@ -50,12 +50,12 @@ create table org_has_event
  foreign key	(org_id) references org_account(org_id),
  foreign key	(event_id) references event(event_id)
  );
- 
+
 --Used for connecting a volunteer to an event
 create table vol_for_event
 (vol_id			int not null,
  event_id		int not null,
  primary key	(vol_id, event_id),
  foreign key 	(vol_id) references volunteer(vol_id),
- foreign key	(event_id) references event(event_id) 
+ foreign key	(event_id) references event(event_id)
  );
