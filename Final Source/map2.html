@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Bree+Serif');
+      @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans');
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 75%;
+        width: 75%;
+        margin: auto;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        padding: 0;
+      }
+      
+      p{
+      	font-family: 'Alegreya Sans', sans-serif;
+      }
+      
+      h3{
+      	font-family: 'Bree Serif', serif;
+      }
+    </style>
+  </head>
+  <body>
+  	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr60lEMN69JMO_TeMU0LvFkFWb_7-YhWE&callback=initMap"
+    	async defer>
+	</script>
+    <div id="map"></div>
+    <script>
+      	var map;
+		function initMap() 
+      	{
+      		var geocoder = new google.maps.Geocoder();
+    		map = new google.maps.Map(document.getElementById('map'), {
+    			center: {lat: 40.85, lng: -124},
+    			zoom: 9
+       	 	});
+       	 	
+       	 	geocodeAddress(geocoder, map);
+      	}
+      	
+      	function geocodeAddress(geocoder, map) 
+      	{
+        	
+        	
+        	var address = '2232 Baldwin St, Arcata, CA';
+        	geocoder.geocode({'address': address}, function(results, status) {
+          		if (status === 'OK') 
+          		{
+           			var marker = new google.maps.Marker({
+            			map: map,
+              			position: results[0].geometry.location
+            			});
+            		var contentString = '<h3>Alecs two owner test</h3>' +
+            			'<p>This is an event to test if the title displays two different owners from the database</p>' +
+            			'<p>03-MAR-2018, 1o clock</p>';
+            			
+            		var infowindow = new google.maps.InfoWindow({
+          				content: contentString
+        				});
+        				
+        			marker.addListener('click', function() {
+          				infowindow.open(map, marker);
+        				});
+          		} 
+          	
+          		else 
+          		{
+            		alert('Geocode was not successful for the following reason: ' + status);
+          		}
+        	});
+      	
+
+      	
+        	var address = '1 Harpst St, Arcata, Ca';
+        	geocoder.geocode({'address': address}, function(results, status) {
+          		if (status === 'OK') 
+          		{
+           			var marker = new google.maps.Marker({
+            			map: map,
+              			position: results[0].geometry.location
+            			});
+            			
+            		var contentString = '<h3>Test Event 1</h3>' +
+            			'<p>This event is for startups</p>' +
+            			'<p>31-MAR-2018, 4:00 pm</p>';
+            			
+            		var infowindow = new google.maps.InfoWindow({
+          				content: contentString
+        				});
+        				
+        			marker.addListener('click', function() {
+          				infowindow.open(map, marker);
+        				});
+          		} 
+          	
+          		else 
+          		{
+            		alert('Geocode was not successful for the following reason: ' + status);
+          		}
+        	});
+      	
+      	
+        	var address = '569 G St, Arcata, CA';
+        	geocoder.geocode({'address': address}, function(results, status) {
+          		if (status === 'OK') 
+          		{
+           			var marker = new google.maps.Marker({
+            			map: map,
+              			position: results[0].geometry.location
+            			});
+            			
+            		var contentString = '<h3>Test Event 2</h3>' +
+            			'<p>Blood donation event in Arcata</p>' +
+            			'<p>20-APR-2018, 10:00 AM</p>';
+            			
+            		var infowindow = new google.maps.InfoWindow({
+          				content: contentString
+        				});
+        				
+        			marker.addListener('click', function() {
+          				infowindow.open(map, marker);
+        				});
+          		} 
+          	
+          		else 
+          		{
+            		alert('Geocode was not successful for the following reason: ' + status);
+          		}
+        	});
+      	
+      
+        	var address = 'Arcata Community Forest, Arcata, CA';
+        	geocoder.geocode({'address': address}, function(results, status) {
+          		if (status === 'OK') 
+          		{
+           			var marker = new google.maps.Marker({
+            			map: map,
+              			position: results[0].geometry.location
+            			});
+            			
+            		var contentString = '<h3>Test Event 3</h3>' +
+            			'<p>This forest restoration volunteering</p>' +
+            			'<p>29-JUL-2018, 12:30 P.M.</p>';
+            			
+            		var infowindow = new google.maps.InfoWindow({
+          				content: contentString
+        				});
+        				
+        			marker.addListener('click', function() {
+          				infowindow.open(map, marker);
+        				});
+          		} 
+          	
+          		else 
+          		{
+            		alert('Geocode was not successful for the following reason: ' + status);
+          		}
+        	});
+        	
+        	(4444, 'Test Event 4', 'Beach Nature Walk And Trash Pickup', '21-MAY-2018',  '7:00 am', 'Sunny Brea', 'Arcata', 'CA',
+ '95521');
+ 
+        	var address = 'Sunny Brea, Arcata, CA';
+        	geocoder.geocode({'address': address}, function(results, status) {
+          		if (status === 'OK') 
+          		{
+           			var marker = new google.maps.Marker({
+            			map: map,
+              			position: results[0].geometry.location
+            			});
+            			
+            		var contentString = '<h3>Test Event 4</h3>' +
+            			'<p>Beach Nature Walk And Trash Pickup</p>' +
+            			'<p>21-MAY-2018, 7:00 am</p>';
+            			
+            		var infowindow = new google.maps.InfoWindow({
+          				content: contentString
+        				});
+        				
+        			marker.addListener('click', function() {
+          				infowindow.open(map, marker);
+        				});
+          		} 
+          	
+          		else 
+          		{
+            		alert('Geocode was not successful for the following reason: ' + status);
+          		}
+        	});
+      	
+      	}
+      	
+      	
+    </script>
+  </body>
+</html>
