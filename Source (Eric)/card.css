@@ -17,7 +17,7 @@
 
 .wrapper
 {
-	
+	margin: 1em;
 	display: grid;
 	width: 50%;
 	grid-gap: 5px;
