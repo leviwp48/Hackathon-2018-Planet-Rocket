@@ -50,22 +50,31 @@
                         <input type="text" name="org-user-in" Value="Username" required>
                         <label for="pass-in">Password: </label>
                         <input type="password" name="org-pass-in" required>
-                        <input type="submit" name="login" value="Login">
+                        <label for="oracle_username"> Oracle Username: </label>
+                        <input type="text" name="oracle_username" required="required" />
+                    
+                        <label for="oracle_password"> Oracle Password: </label>
+                            <input type="password" name="oracle_password" required="required" />
+                        <input type="submit" value="Login" />
                     </fieldset>
                 </form>
+
+
                 <?php
             }
             else{
                 unset($_SESSION['next-state']);
                 $orguin = $_POST['org-user-in'];
                 $orgpin = $_POST['org-pass-in'];
+                $oracle_u = $_POST['oracle_username'];
+                $oracle_p = $_POST['oracle_password'];
 
                 $_SESSION['uin'] = $orguin;
                 $_SESSION['pin'] = $orgpin;
 
                 $conn_str = '(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP) (HOST = cedar.humboldt.edu) (PORT = 1521)) (CONNECT_DATA = (SID = STUDENT)))';
 
-                $conn = oci_connect('bam22', 'Luna68196', $conn_str);
+                $conn = oci_connect($oracle_u, $oracle_p, $conn_str);
                 if(!$conn)
                 {
                     ?>
