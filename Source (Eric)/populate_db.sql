@@ -27,22 +27,22 @@ values
 
 insert into event
 values
-(1111, 'Test Event 1', 'This event is for blah blah blah', '03/31/18', '1 Harpst St', 'Arcata', 'CA',
+(1111, 'Test Event 1', 'This event is for blah blah blah', '31-MAR-2018 17:00', '1 Harpst St', 'Arcata', 'CA',
  '95521');
  
 insert into event
 values
-(2222, 'Test Event 2', 'This event is for blah blah blah', '04/20/18', '569 S G St', 'Arcata', 'CA',
+(2222, 'Test Event 2', 'This event is for blah blah blah', '20-APR-2018 10:00', '569 S G St', 'Arcata', 'CA',
  '95521');
  
 insert into event
 values
-(3333, 'Test Event 3', 'This event is for blah blah blah', '07/29/18', 'Arcata Community Forest', 'Arcata', 'CA',
+(3333, 'Test Event 3', 'This event is for blah blah blah', '29-JUL-2018 17:00', 'Arcata Community Forest', 'Arcata', 'CA',
  '95521');
  
 insert into event
 values
-(4444, 'Test Event 4', 'This event is for blah blah blah', '05/21/18', 'Sunny Brea', 'Arcata', 'CA',
+(4444, 'Test Event 4', 'This event is for blah blah blah', '21-MAY-2018 12:00', 'Sunny Brea', 'Arcata', 'CA',
  '95521');
  
  insert into org_has_event
