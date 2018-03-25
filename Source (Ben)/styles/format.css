@@ -1,0 +1,32 @@
+
+
+/* Color Scheme: #1F2421, #216869, #49A078, #9CC5A1, #DCE1DE */
+@import url('https://fonts.googleapis.com/css?family=Bree+Serif');
+@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans');
+
+body{
+	font-family: 'Alegreya Sans', sans-serif;
+	background-color: #216869;
+}
+
+h1, h2, h3{
+	font-family: 'Bree Serif', serif;
+}
+
+button{
+	border: none;
+	color: white;
+	background-color: #1F2421;
+	text-align: center;
+	transition: color 1s, background-color 1s;
+}
+
+button:hover{
+	color: black;
+	background-color: #DCE1DE;
+}
+
+fieldset{
+	background-color: #9CC5A1;
+	border-radius: 25px;
+}

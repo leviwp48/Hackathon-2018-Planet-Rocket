@@ -1,0 +1,82 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title> Planet Rocket </title>
+    <meta charset="utf-8" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="styles/layout.css">
+    <link rel="stylesheet" type="text/css" href="styles/format.css">
+    <script src="scripts/buttons.js"></script>
+    
+</head>
+<body>
+    <img class="landing-image" src="images/planet-rocket.png">
+    <button class="back">Back</button>
+
+    <div id="view1" class="visable">
+        <h1> Welcome to Volunteering! </h1>
+        <p> Are you are Volunteer or an Organization? </p>
+        <div class="alignbtn">
+            <button id="vol" name="volunteer">I am a Volunteer</button>
+            <button id="org" name="organizer">I am an Organization</button>
+        </div>
+    </div>
+
+    <div id="view2" class="hidden">
+        <h2> Welcome to Planet Rocket! Do you have an Account?</h2>
+        <div class="alignbtn">
+            <button id="org_login">Yes <span style="text-decoration: underline;">Login</span></button>
+            <button id="org_reg">No, <span style="text-decoration: underline;">Register</span></button>
+        </div>
+    </div>
+
+    <div id="register-form" class="hidden">
+        <h1> Register your organization </h1>
+        <form action="home.php" method="post">
+            <fieldset>
+                <label for="org_name">Organization Name: </label>
+                    <input type="text" name="org_name" required/>
+                <label for="username-reg">UserName: </label>
+                    <input type="text" name="username-reg" value="Enter Username" required/>
+                <label for="password-reg">Choose a Password: </label>
+                    <input type="password" name="password-reg" required/>
+                <label for="org_name">Retype Password</label>
+                    <input type="password" name="password-check" required/>
+                <label for="street-add">Address:</label>
+                    <input type="text" name="street-add" required/>
+                <label for="city-add">City:</label>
+                    <input type="text" name="city-add" required/>
+                <label for="state-add">State:</label>
+                    <input type="text" name="state-add" required/>
+                <label for="state-add">Zip:</label>
+                    <input type="zip" name="zip-add" required/>
+                <label for="org-email">Email:</label>
+                    <input type="email" name="org-email" required/>
+                <label for="org-tel">Telephone:</label>
+                    <input type="tel" name="org-tel" required/>
+                <label for="org-url">Url:</label>
+                    <input type="url" name="org-url"/>
+                    <input type="submit" name="submit-org" value="Register">
+
+            </fieldset>
+        </form>
+    </div>
+
+    <div id="login-form" class="hidden">
+        <h1>Organization Login</h1>
+        <form action="index.html" method="post">
+            <fieldset>
+                <label for="user-in">UserName: </label>
+                <input type="text" name="user-in" Value="Username" required>
+                <label for="pass-in">Password: </label>
+                <input type="password" name="pass-in" required>
+                <input type="submit" name="login" value="Login">
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>

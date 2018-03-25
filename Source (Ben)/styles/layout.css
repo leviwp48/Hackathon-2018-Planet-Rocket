@@ -1,0 +1,86 @@
+body{
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+h1, h2{
+	text-align: center;
+}
+
+p{
+	text-align: center;
+	font-size: 1.2em;
+}
+
+fieldset{
+	border: none;
+	display: block;
+	width: 50%;
+	margin: auto;
+	text-align: center;
+}
+
+label{
+	margin-top: .75em;
+	display: block;
+}
+
+input{
+	display: block;
+	margin: auto;
+	margin-bottom: .75em;
+	height: 25px;
+	width: 200px;
+	text-align: center;
+}
+
+button{
+	padding: 1.5em;
+}
+
+
+.back{
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.alignbtn{
+	width: 50%;
+	margin: auto;
+	text-align: center;
+}
+
+button{
+	margin-bottom: .5em;
+}
+
+.landing-image{
+	display: block;
+	width: 538px;
+	margin: auto;
+}
+
+.visible{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	transition: left .75s;
+	
+}
+
+.visible{transition-timing-function: ease-out;}
+
+.hidden{
+	overflow: hidden;
+	position: absolute;
+	opacity: 0;
+	left: -1000px;
+	top: 0;
+}
+
+
+
