@@ -52,7 +52,7 @@ values
  
 insert into event
 values
-(3333, 'Test Event 3', 'This forest restoration volunteering', '29-JUL-2018',  '12:30 P.M.', 'Arcata Community Forest', 'Arcata', 'CA',
+(3333, 'Test Event 3', 'This is forest restoration volunteering', '29-JUL-2018',  '12:30 P.M.', 'Arcata Community Forest', 'Arcata', 'CA',
  '95521');
  
 insert into event
