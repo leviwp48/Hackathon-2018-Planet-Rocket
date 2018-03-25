@@ -135,9 +135,11 @@
 			{
 				$logon_ck_str = "select * 
 								 from org_account
-								 where org_username = '".$org_username."' and 
-								 org_password = '".$org_password."'"; 
+								 where org_username = :org_username and 
+								 org_password = :org_password"; 
 				$logon_ck_stmt = oci_parse($conn, $logon_ck_str);
+				oci_bind_by_name($logon_ck_stmt, ':org_username', $org_username);
+				oci_bind_by_name($logon_ck_stmt, ':org_password', $org_password);
 				oci_execute($logon_ck_stmt, OCI_DEFAULT);
 				
 				if(oci_fetch($logon_ck_stmt))
@@ -280,8 +282,9 @@
 			$event_start_hour = $_POST['event_start_hour'];
 			$event_start_minute = $_POST['event_start_minute'];
 			$event_aorp = $_POST['event_aorp'];
-			$date_str = $event_day."-".$event_month."-".$event_year." ".$event_start_hour.":".$event_start_minute." ".$event_aorp;
-			
+			$date_str = $event_day."-".$event_month."-".$event_year;
+			$time_str = $event_start_hour.":".$event_start_minute." ".$event_aorp;
+						
 			if(!$conn)
 			{
 				?>
@@ -293,33 +296,38 @@
 			}
 			else
 			{
-				$new_row_str = "insert into event (event_id, event_date, event_name, event_description, event_address, event_city, event_state, event_zip)
+				$new_row_str = "insert into event (event_id, event_date, event_time, event_name, event_description, event_address, event_city, event_state, event_zip)
 								values
-								(new_event_id.nextval, to_date('".$date_str."','DD-MON-YY HH:MI PM'), '".$event_name."', '".$event_description."', '".$event_address."', '".$event_city."', '".$event_state."', '".$event_zip."')";
+								(new_event_id.nextval, '".$date_str."', '".$time_str."', '".$event_name."', '".$event_description."', '".$event_address."', '".$event_city."', '".$event_state."', '".$event_zip."')";
 				$new_row_stmt = oci_parse($conn, $new_row_str);
-				$change_format_str = "alter session set NLS_DATE_FORMAT = 'dd-MON-yyyy HH24:mi'";
-				$change_format_stmt = oci_parse($conn, $change_format_str);
-				oci_execute($change_format_stmt, OCI_DEFAULT);
 				$num_rows = oci_execute($new_row_stmt, OCI_DEFAULT);
 				
 				$get_eid_str = "select event_id
 								   from event
-								   where event_name = '".$event_name."'
-										and event_description = '".$event_description."'";
+								   where event_name = :event_name
+										and event_description = :event_description";
 				$get_eid_stmt = oci_parse($conn, $get_eid_str);
+				oci_bind_by_name($get_eid_stmt, ':event_name', $event_name);
+				oci_bind_by_name($get_eid_stmt, ':event_description', $event_description);
 				oci_execute($get_eid_stmt, OCI_DEFAULT);
 				if(oci_fetch($get_eid_stmt))
 				{
 					$event_id = oci_result($get_eid_stmt, 'EVENT_ID');
+				}
+				else
+				{
+					$event_id;
 				}
 				
 				$org_username = $_SESSION['org_username'];
 				$org_password = $_SESSION['org_password'];
 				$get_oid_str = "select org_id
 								   from org_account
-								   where org_username = '".$org_username."'
-										and org_password = '".$org_password."'";
+								   where org_username = :org_username
+										and org_password = :org_password";
 				$get_oid_stmt = oci_parse($conn, $get_oid_str);
+				oci_bind_by_name($get_oid_stmt, ':org_username', $org_username);
+				oci_bind_by_name($get_oid_stmt, ':org_password', $org_password);
 				oci_execute($get_oid_stmt, OCI_DEFAULT);
 				if(oci_fetch($get_oid_stmt))
 				{
@@ -330,8 +338,10 @@
 				{
 					$insert_new_str = "insert into org_has_event 
 									   values
-									   (".$org_id.", ".$event_id.")";
+									   (:org_id, :event_id)";
 					$insert_new_stmt = oci_parse($conn, $insert_new_str);
+					oci_bind_by_name($insert_new_stmt, ':org_id', $org_id);
+					oci_bind_by_name($insert_new_stmt, ':event_id', $event_id);
 					oci_execute($insert_new_stmt, OCI_DEFAULT);
 					oci_commit($conn);
 				}
@@ -344,7 +354,6 @@
 				oci_free_statement($get_eid_stmt);
 				oci_free_statement($insert_new_stmt);
 				oci_free_statement($get_oid_stmt);
-				oci_free_statement($change_format_stmt);
 			}
 			session_destroy();
 		}

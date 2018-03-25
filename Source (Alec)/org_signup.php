@@ -220,9 +220,11 @@
 						if(array_key_exists('mail_address', $_SESSION))
 						{
 							$update_mail_str = "update org_account
-												set org_address = '".$_SESSION['mail_address']."' 
-												where org_username = '".$_SESSION['username']."'";
+												set org_address = :mail_address 
+												where org_username = :username";
 							$update_mail_stmt = oci_parse($conn, $update_mail_str);
+							oci_bind_by_name($update_mail_stmt, ':mail_address', $_SESSION['mail_address']);
+							oci_bind_by_name($update_mail_stmt, ':username', $_SESSION['username']);
 							oci_execute($update_mail_stmt, OCI_DEFAULT);
 							oci_commit($conn);
 
@@ -231,9 +233,11 @@
 						if(array_key_exists('org_phone', $_SESSION))
 						{
 							$update_phone_str = "update org_account
-												set org_phone_num = '".$_SESSION['org_phone']."' 
-												where org_username = '".$_SESSION['username']."'";
+												set org_phone_num = :org_phone
+												where org_username = :username";
 							$update_phone_stmt = oci_parse($conn, $update_phone_str);
+							oci_bind_by_name($update_phone_stmt, ':org_phone', $_SESSION['org_phone']);
+							oci_bind_by_name($update_phone_stmt, ':username', $_SESSION['username']);
 							oci_execute($update_phone_stmt, OCI_DEFAULT);
 							oci_commit($conn);
 						}
@@ -241,9 +245,11 @@
 						if(array_key_exists('org_url', $_SESSION))
 						{
 							$update_url_str = "update org_account
-							  					 set org_url = '".$_SESSION['org_url']."' 
-												 where org_username = '".$_SESSION['username']."'";
+							  					 set org_url = :org_url
+												 where org_username = :username";
 							$update_url_stmt = oci_parse($conn, $update_url_str);
+							oci_bind_by_name($update_url_stmt, ':org_url', $_SESSION['org_url']);
+							oci_bind_by_name($update_url_stmt, ':username', $_SESSION['username']);
 							oci_execute($update_url_stmt, OCI_DEFAULT);
 							oci_commit($conn);
 							oci_free_statement($update_url_stmt);
