@@ -35,6 +35,7 @@
     
 </head>
 <body>
+    
     <img class="landing-image" src="images/planet-rocket.png">
     <button class="back">Back</button>
     <a href="logout.php"><button>Logout/DestroySession</button></a>

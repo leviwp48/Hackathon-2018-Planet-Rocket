@@ -23,10 +23,20 @@ button{
 
 button:hover{
 	color: black;
+	border: none;
 	background-color: #DCE1DE;
+}
+
+button:active{
+	border: none;
 }
 
 fieldset{
 	background-color: #9CC5A1;
 	border-radius: 25px;
+}
+main{
+	background-color: #49A078;
+	border-top-right-radius: 25px;
+	border-top-left-radius: 25px;
 }

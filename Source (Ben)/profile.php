@@ -21,7 +21,7 @@
     <?php
         require_once("form_injections.php");
     ?>
-    
+     
 </head>
 <body>
     <img class="landing-image" src="images/planet-rocket.png">
@@ -40,8 +40,14 @@
                 <p>Phone: <?= $_SESSION["org_phone"]?></p>
                 <p>Address: <?= $_SESSION["org_address"]?></p>
                 <p>Url: <?= $_SESSION["org_url"]?></p>
-                
             </main>
+            <a href="makeevent.php"><button class="event-btn org-nav">Create Event</button></a>
+            <a><button class="org-nav">Placeholder</button></a>
+            <a><button class="org-nav">Placeholder</button></a>
+            <a><button class="org-nav">Placeholder</button></a>
+            <a><button class="org-nav">Placeholder</button></a>
+            <a><button class="org-nav">Placeholder</button></a>
+            <div class="profile-image-cont"><img src="images/planet-rocket.png" class="profile-img"></div>
             <?php
         }
     ?>

@@ -38,6 +38,18 @@ button{
 	padding: 1.5em;
 }
 
+main{
+	text-align: left;
+	padding: 2em;
+}
+
+main > h2{
+	text-align: left;
+}
+
+main > p{
+	text-align: left;
+}
 
 .back{
 	position: absolute;
@@ -63,13 +75,16 @@ button{
 	margin: auto;
 }
 
+.org-nav{
+	display: inline-block;
+}
+
 .visible{
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	left: 0;
 	transition: left .75s;
-	
 }
 
 .visible{transition-timing-function: ease-out;}
@@ -82,5 +97,20 @@ button{
 	top: 0;
 }
 
+.profile-image-cont{
+	border-radius: 50%;
+	background-color: white;
+	width: 100px;
+	height: 100px;
+	position: fixed;
+	right: 40px;
+	top: 50%;
+
+}
+
+.profile-img{
+	border-radius: 50%;
+	width: 100px;
+}
 
 
