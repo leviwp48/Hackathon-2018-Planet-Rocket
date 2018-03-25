@@ -37,7 +37,6 @@
 	<img class="landing-image" src="images/planet-rocket.png">
     <a href="logout.php"><button class="back">Logout</button></a>
     <h1>Make a New Event!</h1>
-    <h2><?= $_SESSION['next-state'] ?></h2>
 	<?php
 	if(! array_key_exists('next-state', $_SESSION))
 	{
