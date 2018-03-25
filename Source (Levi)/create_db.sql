@@ -1,7 +1,7 @@
 --Eric Mott
 --Team HotSauce
 --Hackathon 2018
-df
+
 drop table org_account cascade constraints;
 drop table event cascade constraints;
 drop table volunteer cascade constraints;
