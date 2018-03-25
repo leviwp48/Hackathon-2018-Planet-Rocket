@@ -37,7 +37,6 @@ session_start();
 </head>
 
 <body>
-
 	<?php
 	if(! array_key_exists('next-state', $_SESSION))
 	{
@@ -114,7 +113,7 @@ session_start();
 						$curr_name = oci_result($get_events_stmt, 'EVENT_NAME');
 						$curr_description = oci_result($get_events_stmt, 'EVENT_DESCRIPTION');
 						$curr_date = oci_result($get_events_stmt, 'EVENT_DATE');
-						$curr_time = oci_result($get_events_stmt, 'EVENT_TIME');
+						//$curr_time = oci_result($get_events_stmt, 'EVENT_TIME');
 						$curr_street_address = oci_result($get_events_stmt, 'EVENT_ADDRESS');
 						$curr_city = oci_result($get_events_stmt, 'EVENT_CITY');
 						$curr_state = oci_result($get_events_stmt, 'EVENT_STATE');
@@ -168,8 +167,8 @@ session_start();
 								<div class="text">
 									<h4 class="header"><?= $curr_name ?></h4>
 									<p class="info"><?= $curr_description ?></p>
-									<p class="info"><?= $curr_date  ?>, <?= $curr_time ?></p>
-									<p class="info"><?= $curr_loc?></p>
+									<!--<p class="info"><?= $curr_date  ?>, <?= $curr_time ?></p>
+									--><p class="info"><?= $curr_loc?></p>
 								</div>
 							</div> 
 							<?php 
@@ -295,58 +294,10 @@ session_start();
     </div>
 	
 	<div class="holder" id="map-section">
-	
-	<h1> Map section </h1>		
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAr60lEMN69JMO_TeMU0LvFkFWb_7-YhWE&callback=initMap"
-			async defer>
-		</script>		
-		<div id="map"></div>
-		<script>
-			var map;
-			function initMap() 
-			{
-				var geocoder = new google.maps.Geocoder();
-				map = new google.maps.Map(document.getElementById('map'), {
-					center: {lat: 40.85, lng: -124},
-					zoom: 9
-				});
-       	 	
-				geocodeAddress(geocoder, map);
-			}
-      	
-			function geocodeAddress(geocoder, map) 
-			{
-				var address = 'Arcata, CA';
-				geocoder.geocode({'address': address}, function(results, status) {
-					if (status === 'OK') 
-					{
-						var marker = new google.maps.Marker({
-							map: map,
-							position: results[0].geometry.location
-							});
-            			
-						var contentString = '<h3> This is an Event </h3>' +
-							'<p> Info </p>' +
-							'<p> Time </p>' +
-							'<p> Date </p>';
-            			
-						var infowindow = new google.maps.InfoWindow({
-							content: contentString
-							});
-        				
-						marker.addListener('click', function() {
-							infowindow.open(map, marker);
-							});
-					} 
-          	
-					else 
-					{
-						alert('Geocode was not successful for the following reason: ' + status);
-					}
-				});
-			}      	
-		</script>	
-	</div>	
+	<h1> Map section </h1>
+		<a href="http://nrs-projects.humboldt.edu/~lwp41/planetrocket/map.html" class="map-link"> to map </a>
+	</div>
+			
 	<?php
 	}
 	else

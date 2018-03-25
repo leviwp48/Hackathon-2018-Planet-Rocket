@@ -9,48 +9,42 @@ session_start();
     by: Levi Pole
 		Hackathon 2018
 
-    you can run this using the URL: http://nrs-projects.humboldt.edu/~lwp41/planetrocket/titlepage.php
+    you can run this using the URL: http://nrs-projects.humboldt.edu/~arl505/hack/title_page.php
 -->
 
 <head>
     <title> Planet Rocket </title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />   
 	<meta name="viewport" content="initial-scale=1.0">
-
+	
 	<link href="http://nrs-projects.humboldt.edu/~lwp41/planetrocket/format.css"
           type="text/css" rel="stylesheet" />
 	<link href="card.css" type="text/css" rel="stylesheet" />
-
+	
+	<style>
+	table, tr, td, th
+	{
+		border: thin solid black;
+		border-collapse: collapse; 
+	}
+	</style>
+			
 	<?php
-		header('X-Frame-Options: GOFORIT');
+		header('X-Frame-Options: GOFORIT'); 
 		require_once("hsu_conn.php");
 	?>
-
+	
 </head>
 
 <body>
-	<h1> Planet Rocket </h1>
-
-	<div class="dropdown-events">
-		<button class="events"> <a href="#event-section"> Events </a> </button>
-		<div class="dropdown-events-content">
-			<a href="#schedule-section"> Schedule </a>
-			<a href="#calendar-section"> Calendar </a>
-			<a href="#map-section"> Map </a>
-		</div>
-	</div>
-    <button type="button" class="nav"> <a href="#org-section"> Organization </a> </button>
-    <button type="button" class="nav"> <a href="#login-section"> Login </a> </button>
-
-    <h2> Important Events </h2>
 	<?php
 	if(! array_key_exists('next-state', $_SESSION))
 	{
 		?>
-		To view events, you must login to the main database. Enter your Oracle credentials.
+		To view this page, you must have access to the main database. Enter your Oracle credentials.
 		<fieldset> <legend> Database Login </legend>
 			<form action = "<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>"
-			  method = "post" />
+			  method = "post" /> 
 				<label> Oracle Username: <br />
 					<input type="text" name="oracle_username" required="required"/>
 				</label> <br />
@@ -61,16 +55,18 @@ session_start();
 			</form>
 		</fieldset>
 		<?php
-		$_SESSION['next-state'] = '2checklogin';
+		$_SESSION['next-state'] = '1goto';
 	}
-
-	elseif($_SESSION['next-state'] == '2checklogin')
+			
+	elseif ($_SESSION['next-state'] == '1goto' )
 	{
 		if(array_key_exists('oracle_username', $_POST) and array_key_exists('oracle_password', $_POST))
 		{
 			$db_conn_str = '(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP) (HOST = cedar.humboldt.edu) (PORT = 1521)) (CONNECT_DATA = (SID = STUDENT)))';
 			$oracle_username = $_POST['oracle_username'];
 			$oracle_password = $_POST['oracle_password'];
+			$_SESSION['oracle_username'] = $oracle_username;
+			$_SESSION['oracle_password'] = $oracle_password;
 			$conn = oci_connect($oracle_username, $oracle_password, $db_conn_str);
 			if(!$conn)
 			{
@@ -83,6 +79,23 @@ session_start();
 			}
 			else
 			{
+				
+			?>
+	<h1> Planet Rocket </h1>
+	
+	<div class="dropdown-events">
+		<button class="events"> <a href="#event-section"> Events </a> </button>
+		<div class="dropdown-events-content">
+			<a href="#schedule-section"> Schedule </a>
+			<a href="#calendar-section"> Calendar </a> 
+			<a href="#map-section"> Map </a> 
+		</div>
+	</div>
+    <button type="button" class="nav"> <a href="#org-section"> Organization </a> </button>
+    <button type="button" class="nav"> <a href="#login-section"> Login </a> </button>
+	
+    <h2> Important Events </h2>
+    <?php	
 				$get_events_str = 'select *
 								   from event
 								   order by event_date';
@@ -91,7 +104,7 @@ session_start();
 				$count_to_four = 0;
 				?>
 				<div class="wrapper">
-				<?php
+				<?php 
 				while($count_to_four < 4)
 				{
 					if(oci_fetch($get_events_stmt))
@@ -100,13 +113,13 @@ session_start();
 						$curr_name = oci_result($get_events_stmt, 'EVENT_NAME');
 						$curr_description = oci_result($get_events_stmt, 'EVENT_DESCRIPTION');
 						$curr_date = oci_result($get_events_stmt, 'EVENT_DATE');
-						$curr_time = oci_result($get_events_stmt, 'EVENT_TIME');
+						//$curr_time = oci_result($get_events_stmt, 'EVENT_TIME');
 						$curr_street_address = oci_result($get_events_stmt, 'EVENT_ADDRESS');
 						$curr_city = oci_result($get_events_stmt, 'EVENT_CITY');
 						$curr_state = oci_result($get_events_stmt, 'EVENT_STATE');
 						$curr_zip = oci_result($get_events_stmt, 'EVENT_ZIP');
 						$curr_loc = $curr_street_address.", ".$curr_city.", ".$curr_state.", ".$curr_zip;
-
+						
 						$find_oid_str = 'select org_id
 										 from org_has_event
 										 where event_id = :event_id';
@@ -123,17 +136,17 @@ session_start();
 							$get_name_stmt = oci_parse($conn, $get_name_str);
 							oci_bind_by_name($get_name_stmt, ':org_id', $curr_oid);
 							oci_execute($get_name_stmt, OCI_DEFAULT);
-
+							
 							if(oci_fetch($get_name_stmt))
 							{
 								$curr_owner = oci_result($get_name_stmt, 'ORG_NAME');
 							}
-
+							
 							else
 							{
 								$curr_owner = "";
 							}
-
+							
 							if($event_owners == "")
 							{
 								$event_owners = $curr_owner;
@@ -143,7 +156,7 @@ session_start();
 								$event_owners = $event_owners." and ".$curr_owner;
 							}
 						}
-
+						
 						?>
 								<div class="card">
 								<div class="org">
@@ -154,145 +167,45 @@ session_start();
 								<div class="text">
 									<h4 class="header"><?= $curr_name ?></h4>
 									<p class="info"><?= $curr_description ?></p>
-									<p class="info"><?= $curr_date  ?>, <?= $curr_time ?></p>
-									<p class="info"><?= $curr_loc?></p>
+									<!--<p class="info"><?= $curr_date  ?>, <?= $curr_time ?></p>
+									--><p class="info"><?= $curr_loc?></p>
 								</div>
-							</div>
-							<?php
+							</div> 
+							<?php 
 					}
 					$count_to_four = $count_to_four + 1;
 				}
 				?>
 				</div>
-				<?php
-			}
+	
+	<div class="holder" id="schedule-section"> <h1> schedule section </h1> 
+		<div id="list"> 
+		
+		<?php
+		
+			}  
 		}
 		else
 		{
 			?>
 			You shouldn't be here! <br />
 			<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
-			<?php
+			<?php	
 			session_destroy();
 			exit;
 		}
-		session_destroy();
-	}
-
-	else
-	{
-		?>
-		You shouldn't be here! <br />
-		<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
-		<?php
-		session_destroy();
-		exit;
-	}
-	?>
-	<!--
-	<div class="wrapper">
-
-	<div class="card">
-		<div class="org">
-			<img src="black.jpeg" alt="Avatar" class="avatar">
-			<h3 class="av_header"> Planet Rocket</h3>
-		</div>
-		<img src="hsu_lib.jpg" style="width:100%">
-		<div class="text">
-			<h4 class="header">Event Name</h4>
-			<p class="info">Info</p>
-			<p class="info">Date</p>
-			<p class="info">Location</p>
-		</div>
-	</div>
-
-	<div class="card">
-		<div class="org">
-			<img src="black.jpeg" alt="Avatar" class="avatar">
-			<h3 class="av_header"> Red Cross</h3>
-		</div>
-		<img src="hsu_lib.jpg" style="width:100%">
-		<div class="text">
-			<h4 class="header">Event Name</h4>
-			<p class="info">Info</p>
-			<p class="info">Date</p>
-			<p class="info">Location</p>
-		</div>
-	</div>
-
-	<div class="card">
-		<div class="org">
-			<img src="black.jpeg" alt="Avatar" class="avatar">
-			<h3 class="av_header"> Friends of the Dunes</h3>
-		</div>
-		<img src="hsu_lib.jpg" style="width:100%">
-		<div class="text">
-			<h4 class="header">Event Name</h4>
-			<p class="info">Info</p>
-			<p class="info">Date</p>
-			<p class="info">Location</p>
-		</div>
-	</div>
-
-	<div class="card">
-		<div class="org">
-			<img src="black.jpeg" alt="Avatar" class="avatar">
-			<h3 class="av_header">Greenpeace</h3>
-		</div>
-		<img src="hsu_lib.jpg" style="width:100%">
-		<div class="text">
-			<h4 class="header">Event Name</h4>
-			<p class="info">Info</p>
-			<p class="info">Date</p>
-			<p class="info">Location</p>
-		</div>
-	</div>
-
-	</div>
-	-->
-	<div class="holder" id="schedule-section"> <h1> schedule section </h1>
-		<div id="list">
-		<ul>
-
-		<?php
-		if ( ! array_key_exists("next-state", $_SESSION) )
-		{
-			?>
-
-			<form method="post"
-				  action="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">
-			<fieldset>
-				<legend> Please enter Oracle username/password: </legend>
-
-				<label for="username"> Username: </label>
-					<input type="text" name="username" id="username" required="required"/>
-
-				<label for="password"> Password: </label>
-					<input type="password" name="password"
-						   id="password" required="required"/>
-
-				<div class="submit">
-					<input type="submit" value="Log in" />
-				</div>
-			</fieldset>
-			</form>
-			<?php
-			$_SESSION['next-state'] = 'place2';
-		}
-		elseif($_SESSION['next-state'] == 'place2')
-		{
-			if(array_key_exists('username', $_POST) and array_key_exists('password', $_POST))
+			if(array_key_exists('oracle_username', $_SESSION) and array_key_exists('oracle_password', $_SESSION))
 			{
-
-				$username = strip_tags($_POST['oracle_username']);
-
-				$password = $_POST['oracle_password'];
-
-				$conn = hsu_conn($username, $password);
+				?>
+				<?php
+				$username = $_SESSION['oracle_username'];
+				$password = $_SESSION['oracle_password'];
+		
+				$conn = hsu_conn($username, $password);  
 				if($conn)
-				{
-					$tracker = 0;
-
+				{			
+					$tracker = 0;				
+				
 					$count_query = 'select count(event_id)
 									from event';
 					$count_parse = oci_parse($conn, $count_query);
@@ -303,21 +216,21 @@ session_start();
 					?>
 					<ul>
 					<?php
+					
 					$query = 'select event_name, event_description, event_date, event_address
 							  from event';
 					$query_parse = oci_parse($conn, $query);
 					oci_execute($query_parse, OCI_DEFAULT);
-
-					?>
-					<!--
+					
+					?> <!--
+						<table>
 						<caption> Event Information </a>
 							<tr> <th scope="col"> Name</th>
 								 <th scope="cols"> Description</th>
 								 <th scope="cols"> Date </th>
 								 <th scope="cols"> Address </th>
-							</tr>
-					-->
-						<?php
+							</tr> -->
+						<?php 
 					while ($tracker < $count)
 					{
 						if(oci_fetch($query_parse))
@@ -325,22 +238,20 @@ session_start();
 							$curr_event_name = oci_result($query_parse, "EVENT_NAME");
 							$curr_event_description = oci_result($query_parse, "EVENT_DESCRIPTION");
 							$curr_event_date = oci_result($query_parse, "EVENT_DATE");
-							$curr_event_address = oci_result($query_parse, "EVENT_ADDRESS");
+							$curr_event_address = oci_result($query_parse, "EVENT_ADDRESS");	
 							?>
-								<li>
+								<li> 
 									<div class="values">
 										<p> <?= $curr_event_name ?> </p>
 										<p> <?=$curr_event_description ?> </p>
 										<p> <?= $curr_event_date ?> </p>
 										<p> <?= $curr_event_address ?> </p>
 									</div>
-								</li>
-								<!--
+								</li> <!--
 									<tr><td><?= $curr_event_name ?> </td>
 										<td><?= $curr_event_description ?> </td>
 										<td><?= $curr_event_date ?> </td>
-										<td><?= $curr_event_address ?> </td> </tr>
-								-->
+										<td><?= $curr_event_address ?> </td> </tr>  -->
 							<?php
 						}
 						else
@@ -355,44 +266,49 @@ session_start();
 					</ul>
 					<?php
 				}
-
-			}
-			else
-			{
-				?>
-				SHOULDN'T HAVE BEEN ABLE TO MAKE IT HERE!
-				<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
-				<?php
 				session_destroy();
-				exit;
+	
 			}
-		}
+		
 		else
 		{
 			?>
-			SHOULDN'T HAVE BEEN ABLE TO MAKE IT HERE!
+			SHOULDN'T HAVE BEEN ABLE TO MAKE IT HERE! <br >
 			<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
 			<?php
 			session_destroy();
 			exit;
 		}
 		?>
-
+	
 		</div>
 	</div>
-
-	<div class="holder" id="calendar-section"> <h1> calendar section </h1>
+	
+	<div class="holder" id="calendar-section"> <h1> calendar section </h1> 	
 		<iframe src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1
 			&amp;bgcolor=%23FFFFFF&amp;src=mockupplanetrocket%40gmail.com&amp;color=%
-			231B887A&amp;ctz=America%2FLos_Angeles"
-			style="border-width:0" width="800" height="600"
+			231B887A&amp;ctz=America%2FLos_Angeles" 
+			style="border-width:0" width="800" height="600" 
 			frameborder="0" >
 		</iframe>
     </div>
-
+	
 	<div class="holder" id="map-section">
 	<h1> Map section </h1>
 		<a href="http://nrs-projects.humboldt.edu/~lwp41/planetrocket/map.html" class="map-link"> to map </a>
 	</div>
+			
+	<?php
+	}
+	else
+	{
+		?>
+		You shouldn't be here! <br />
+		<a href="<?= htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES) ?>">Return</a>
+		<?php
+		session_destroy();
+		exit;
+	}
+	?>
 </body>
 </html>
