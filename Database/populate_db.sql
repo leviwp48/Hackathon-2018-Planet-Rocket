@@ -42,22 +42,22 @@ values
 
 insert into event
 values
-(1111, 'Test Event 1', 'This event is for blah blah blah', '31-MAR-2018', '4:00 pm', '1 Harpst St', 'Arcata', 'CA',
+(1111, 'Test Event 1', 'This event is for startups', '31-MAR-2018', '4:00 pm', '1 Harpst St', 'Arcata', 'CA',
  '95521');
  
 insert into event
 values
-(2222, 'Test Event 2', 'This event is for blah blah blah', '20-APR-2018', '10:00 AM', '569 S G St', 'Arcata', 'CA',
+(2222, 'Test Event 2', 'Blood donation event in Arcata', '20-APR-2018', '10:00 AM', '569 S G St', 'Arcata', 'CA',
  '95521');
  
 insert into event
 values
-(3333, 'Test Event 3', 'This event is for blah blah blah', '29-JUL-2018',  '12:30 P.M.', 'Arcata Community Forest', 'Arcata', 'CA',
+(3333, 'Test Event 3', 'This forest restoration volunteering', '29-JUL-2018',  '12:30 P.M.', 'Arcata Community Forest', 'Arcata', 'CA',
  '95521');
  
 insert into event
 values
-(4444, 'Test Event 4', 'This event is for blah blah blah', '21-MAY-2018',  '7:00 am', 'Sunny Brea', 'Arcata', 'CA',
+(4444, 'Test Event 4', 'Beach Nature Walk And Trash Pickup', '21-MAY-2018',  '7:00 am', 'Sunny Brea', 'Arcata', 'CA',
  '95521');
  
  insert into org_has_event
