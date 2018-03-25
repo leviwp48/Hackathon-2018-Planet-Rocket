@@ -113,7 +113,6 @@ session_start();
 						$curr_name = oci_result($get_events_stmt, 'EVENT_NAME');
 						$curr_description = oci_result($get_events_stmt, 'EVENT_DESCRIPTION');
 						$curr_date = oci_result($get_events_stmt, 'EVENT_DATE');
-						//$curr_time = oci_result($get_events_stmt, 'EVENT_TIME');
 						$curr_street_address = oci_result($get_events_stmt, 'EVENT_ADDRESS');
 						$curr_city = oci_result($get_events_stmt, 'EVENT_CITY');
 						$curr_state = oci_result($get_events_stmt, 'EVENT_STATE');
@@ -167,8 +166,8 @@ session_start();
 								<div class="text">
 									<h4 class="header"><?= $curr_name ?></h4>
 									<p class="info"><?= $curr_description ?></p>
-									<!--<p class="info"><?= $curr_date  ?>, <?= $curr_time ?></p>
-									--><p class="info"><?= $curr_loc?></p>
+									<p class="info"><?= $curr_date  ?></p>
+									<p class="info"><?= $curr_loc?></p>
 								</div>
 							</div> 
 							<?php 
@@ -248,7 +247,7 @@ session_start();
 										<p> <?= $curr_event_address ?> </p>
 									</div>
 								</li> <!--
-									<tr><td><?= $curr_event_name ?> </td>
+									<tr><td><?=$curr_event_name ?> </td>
 										<td><?= $curr_event_description ?> </td>
 										<td><?= $curr_event_date ?> </td>
 										<td><?= $curr_event_address ?> </td> </tr>  -->
