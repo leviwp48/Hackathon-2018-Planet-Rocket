@@ -64,8 +64,9 @@
 			}
 			else
 			{
-				$get_events_str = 'select *
-								   from event';
+				$get_events_str = 'select event_name
+								   from event
+								   order by event_date';
 				$get_events_stmt = oci_parse($conn, $get_events_str);
 				oci_execute($get_events_stmt, OCI_DEFAULT);
 				$count_to_four = 0;
